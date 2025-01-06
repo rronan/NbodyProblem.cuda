@@ -9,7 +9,7 @@ from distutils.sysconfig import get_python_inc
 import numpy as np
 from setuptools import Extension, setup
 
-MOD_NAMES = ["gravity_gpu"]
+MOD_NAMES = ["nbody_cuda"]
 
 compile_options = {
     "msvc": ["/Ox", "/EHsc"],

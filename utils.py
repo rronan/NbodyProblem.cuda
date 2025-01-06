@@ -1,9 +1,15 @@
+from math import pi
 import numpy as np
 from direct.gui.OnscreenText import OnscreenText
 from direct.showbase.ShowBase import ShowBase
 from direct.task import Task
-from panda3d.core import (AmbientLight, DirectionalLight, Texture,
-                          TextureStage, WindowProperties)
+from panda3d.core import (
+    AmbientLight,
+    DirectionalLight,
+    Texture,
+    TextureStage,
+    WindowProperties,
+)
 
 DEFAULT_TRAJECTORIES = np.array(
     [
@@ -83,3 +89,38 @@ class Display3d(ShowBase):
             scale=0.1,
         )
         return Task.cont
+
+
+def get_sphere(args):
+    theta = np.random.rand(args.nbodies) * 2 * pi
+    phi = np.arccos(np.random.rand(args.nbodies) * 2 - 1)
+    x = np.cos(theta) * np.sin(phi)
+    y = np.sin(theta) * np.sin(phi)
+    z = np.cos(phi)
+    res = np.stack([x, y, z], 1)
+    return res
+
+
+def get_space(args):
+    sphere = get_sphere(args)
+    # comment this to have all stars on the sphere
+    # space *= np.random.rand(NBODIES, 1, 2)
+    space = np.stack([sphere * args.r, sphere * args.v], 2)
+    space[:, :, 0] -= space[:, :, 0].mean(0)
+    space[:, :, 1] -= space[:, :, 1].mean(0)
+    return space
+
+
+def parse_results(result_path):
+    with open(result_path, "r") as f:
+        text_list = f.readlines()
+    space_list = []
+    space = []
+    for text in text_list:
+        if text == "\n":
+            space_list.append(space)
+            space = []
+        else:
+            space.append([float(x) for x in text[:-2].split(" ")])
+    res = np.array(space_list).astype("float32")
+    return res
