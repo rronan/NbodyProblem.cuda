@@ -7,7 +7,7 @@ from utils import Display3d, parse_results, get_space
 def parse_args():
     parser = ArgumentParser()
     parser.add_argument("--nsteps", type=int, default=100000)
-    parser.add_argument("--nbodies", type=int, default=1000)
+    parser.add_argument("--nbodies", type=int, default=8)
     parser.add_argument("--r", type=float, default=10)
     parser.add_argument("--v", type=float, default=300)
     parser.add_argument("--G", type=float, default=2e3)

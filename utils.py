@@ -39,8 +39,15 @@ class Display3d(ShowBase):
         p0 = trajectories[0]
         color_list = (p0 - p0.min()) / (p0.max() - p0.min())
         for a, b, c in color_list:
+            from panda3d.core import RenderState, CardMaker, FisheyeMaker
+            from panda3d.core import PandaNode, TextNode, NodePath
+
+            # cm = FisheyeMaker("firefly")
+            # star = NodePath(cm.generate())
+            # star.setTexture(self.loader.loadTexture("assets/firefly.png"))
+
             star = self.loader.loadModel("assets/ball")
-            # star.setTexture(texture, 16)
+
             star.setColor(a, b, c, 1)
             star.setScale(object_scale)
             star.reparentTo(self.render)
